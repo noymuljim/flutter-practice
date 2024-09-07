@@ -1,0 +1,174 @@
+import 'package:finance_tracker/main.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+
+                                                      /// starts from here
+
+
+class onboardingpage extends StatefulWidget{
+  @override
+  State<onboardingpage> createState() => _onboardingpageState();
+}
+
+class _onboardingpageState extends State<onboardingpage> {
+
+
+
+  List onboardingdata= [                        // creating map for boarding info
+    {
+      "image": "assets/images/first.png",
+      "title": "first",
+      "description": "ghfegdbhkdcj"
+    },
+    {
+      "image": "assets/images/second.png",
+      "title": "second",
+      "description": "ghfegdbhkdcj"
+    },
+    {
+      "image": "assets/images/third.png",
+      "title": "third",
+      "description": "ghfegdbhkdcj"
+    },
+
+  ];
+
+
+
+  Color whiteColor= Colors.white;                     //pre define colors
+  Color otherColor= Colors.black;
+
+
+  PageController pageController= PageController();   //pre define method,for control scrolling onboarding pages
+
+
+
+		       // navigate to the next page when we click to the skip or continue button
+
+  
+continueMethod(){                                
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder:( context) => logopage()),    //name of next page= logopage
+        result: (Route<dynamic>route)=>false);
+                  }
+
+
+  int currentPage=0;                   // let assume current index as 0
+
+  onChanged(int index){     // page identity of onboarding pages from where continue button will set
+    setState(() {
+      currentPage =index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));         //title bar remover from onboarding page
+
+
+
+    return Scaffold(
+
+      backgroundColor: whiteColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+
+
+        actions: [                                            // skip button added to to appbar
+          TextButton (onPressed: continueMethod,
+          child: Text('Skip')
+          ),
+        ],
+      ),
+
+
+      body: Stack(                    // cz we are taking button > pic> text etc with stack and column
+        children: [
+          PageView.builder(
+            scrollDirection: Axis.horizontal,
+            controller: pageController,         // calling page scroll controlling method
+            itemCount: onboardingdata.length, // all the items from the list or map
+
+
+            onPageChanged: onChanged,       /// calling page identity from where continue button will set
+
+
+
+            itemBuilder: (context,index){
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Center(
+                  child: Container(
+                    height: 300,
+                    width: 300,
+                    child: Image.asset(onboardingdata[index]['image']      //calling images or text from the previous list
+                                  ),
+                  ),
+                ),
+
+
+          		 Text(onboardingdata[index]['title'],    //title calling
+              style: TextStyle(fontSize: 20,color: otherColor), // index is like array,0/1/2...serially
+                              ),
+              Text(onboardingdata[index]['description'],        //description calling
+              style: TextStyle(fontSize: 10,color: otherColor), )
+                ],
+              );
+            },
+          ),
+
+
+
+          Padding(
+            padding: const EdgeInsets.only(bottom :50),       // padding for continue button (+) scroll dots 
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.end,
+
+              children: [
+                (currentPage==(onboardingdata.length-1))?     // condition setting for continue method
+                    ElevatedButton(onPressed: continueMethod,
+                        child: const Text ("Contienue"),     // calling skip & continue button. same method call hbe
+                    )
+
+
+
+                    :  Row(                  /// (:) if/else er moto kaj kore r eita muloto else
+
+
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    onboardingdata.length,   // length er shoman dots/ [all about dots]
+                      (index){
+                      return AnimatedContainer(
+                          duration:const Duration(
+                            milliseconds: 200,
+                          ),
+                        height: 5,                  // height of dots
+                        width: (index==currentPage)? 20:5,       // dot size, selected 20, unselect 5
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 5,        // margin for dots from the bottom
+                        ) ,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: (index== currentPage)
+                            ?   Colors.pink
+                              : Colors.green,
+                        ),
+                        );
+                      }
+                    ),
+                )
+            ],),
+          )
+        ],
+      ),
+    );
+  }
+}
