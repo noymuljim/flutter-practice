@@ -1,0 +1,79 @@
+ body : Column(                                                       // 3 ta container column e, 1st r 3rd container clipper hishebe
+        children: [
+          Expanded( flex: 1,
+              child: ClipPath(                               // clippath adding
+                clipper: FirstContainer(),                   // function calling of clipper 1
+                child: Container(
+                  color: Colors.brown,
+
+                ),
+              )
+          ),
+          Expanded(flex: 2,          // extra weidget
+              child: Container(
+                color: Colors.white,
+
+              )
+          ),
+          Expanded( flex: 1,          // bottom widget
+              child: ClipPath(
+                clipper: SecondContainer(),                         //function calling of clipper 2
+                child: Container(
+                  color: Colors.brown,
+                
+                ),
+              ))
+        ],
+      )
+
+
+    );
+    }
+  }
+  
+                                                                                                          //first clipper container creating
+  class FirstContainer extends CustomClipper<Path>  {
+  @override
+  Path getClip(Size size) {
+   var path =Path();                                                      //path create 
+   
+   
+   path.lineTo(0, size.height-30);      //start , x=0  &  y=hight-30
+   path.quadraticBezierTo(30, size.height, size.width/6, size.height-30);                                                  //(x1,Y1,x2,y2)= > x1/y1= Controll point, x2/y2= ending point 
+   path.quadraticBezierTo(size.width/3, size.height/2.5,size.width/1.5,size.height-50);
+   path.quadraticBezierTo(size.width/1.2, size.height-20,size.width,size.height/2);
+
+   path.lineTo(size.width, 0);                                                                              // upper part fillup
+   return path;   ////path finishing
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+
+  }
+  
+                                                                                                                    // nicher part start
+class SecondContainer extends CustomClipper<Path>{
+  @override
+  Path getClip(Size size) {
+    var path=Path();                                                                                //same
+    path.moveTo(0, 30);
+    path.quadraticBezierTo(size.width/6, 0, size.width/30, 30);
+    path.quadraticBezierTo(size.width/1.5,size.height/2, size.width, 40);
+    
+    path.lineTo(0, size.height);
+    
+    return path;                                                                                                                 //path finishing
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper)=> false;
+  
+}
+
+
+
+
+
+
+
