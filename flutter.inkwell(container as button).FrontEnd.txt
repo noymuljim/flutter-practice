@@ -1,0 +1,25 @@
+						//how custom container widger works as button//
+
+    	 
+	InkWell(                  		// (2)  > container wrape wioth inkwell widget
+                      onTap: (){
+                        Navigator.push(
+                            context,MaterialPageRoute(
+                            builder: (context)
+                        {
+                         return SignIn(); },          // this is the next page(SignIn) where we want to navigate
+
+                        )         //  MaterialPageRoute
+                          );  },
+
+                      child: Container(       			// (1)  > this is a custom container as button,,this will wrape with inkwell widget
+                        width: 324,
+                       height: 40,
+                       decoration: BoxDecoration(
+                         color: Colors.brown.shade500,
+                         borderRadius: BorderRadius.circular(51)
+                       ),
+                        child: Center(child: Text("Get Started",style: TextStyle(fontSize: 16,color:Colors.white,fontWeight: FontWeight.w500),)),
+                      ),  // container
+                    ),  //inkwell
+                  )  // center
